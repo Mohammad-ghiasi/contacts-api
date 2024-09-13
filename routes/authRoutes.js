@@ -6,69 +6,7 @@ const router = express.Router();
 
 const JWT_SECRET = 'mySecret';
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       required:
- *         - username
- *         - password
- *         - email
- *       properties:
- *         id:
- *           type: string
- *           description: The auto-generated id of the user
- *         username:
- *           type: string
- *           description: The username of the user
- *         password:
- *           type: string
- *           description: The password of the user
- *         email:
- *           type: string
- *           description: The email of the user
- *       example:
- *         id: d5fE_asz
- *         username: johndoe
- *         password: "123456"
- *         email: johndoe@example.com
- */
-
-/**
- * @swagger
- * /auth/signup:
- *   post:
- *     summary: Sign up a new user
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - username
- *               - password
- *             properties:
- *               username:
- *                 type: string
- *                 description: The username for the user
- *               password:
- *                 type: string
- *                 description: The password for the user
- *               email:
- *                 type: string
- *                 description: The email of the user (optional)
- *     responses:
- *       201:
- *         description: User registered successfully
- *       400:
- *         description: Username or email already taken
- *       500:
- *         description: Error registering user
- */
+ 
 // authRoutes.js
 router.post('/signup', async (req, res) => {
     const { username, password, email } = req.body;
@@ -102,36 +40,7 @@ router.post('/signup', async (req, res) => {
 });
 
 
-/**
- * @swagger
- * /auth/login:
- *   post:
- *     summary: Log in a user
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - username
- *               - password
- *             properties:
- *               username:
- *                 type: string
- *                 description: The username for the user
- *               password:
- *                 type: string
- *                 description: The password for the user
- *     responses:
- *       200:
- *         description: Login successful
- *       400:
- *         description: Invalid username or password
- *       500:
- *         description: Error logging in
- */
+
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -151,7 +60,7 @@ router.post('/login', async (req, res) => {
         res.cookie('auth_token', token, {
             httpOnly: true,
             maxAge: 3600000,
-            sameSite: 'None',
+            // sameSite: 'None',
             secure: true
         });
 
