@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000;
 const contactrouter = require('./routes/blogRoutes');
 const { router: authRouter, verifyToken } = require('./routes/authRoutes'); // Import auth routes and verification function
 
-const accesorigin = 'http://localhost:3001'; // The frontend's origin
+const accesorigin = 'https://contact-front-git-main-mohammad-ghiasis-projects.vercel.app/'; // The frontend's origin
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
