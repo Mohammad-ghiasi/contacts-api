@@ -60,7 +60,7 @@ router.post('/login', async (req, res) => {
         res.cookie('auth_token', token, {
             httpOnly: true,
             maxAge: 3600000,
-            // sameSite: 'None',
+            sameSite: 'None',
             secure: true
         });
 
@@ -70,16 +70,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-/**
- * @swagger
- * /auth/logout:
- *   post:
- *     summary: Log out a user
- *     tags: [Auth]
- *     responses:
- *       200:
- *         description: Logout successful
- */
 router.post('/logout', (req, res) => {
     res.clearCookie('auth_token');
     res.json({ message: 'Logout successful' });
