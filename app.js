@@ -6,8 +6,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 const contactrouter = require('./routes/blogRoutes');
 const { router: authRouter, verifyToken } = require('./routes/authRoutes'); // Import auth routes and verification function
-const accesorigin = 'http://localhost:3001'
 
+const accesorigin = 'http://localhost:3001'; // The frontend's origin
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -18,13 +18,9 @@ app.use(cookieParser());
 // Use CORS middleware with configuration
 app.use(cors({
     origin: accesorigin, // Allow requests from this origin
-    credentials: true // Allow credentials (cookies) to be sent
-}));
-
-// Handle preflight requests
-app.options(accesorigin, cors({
-    origin: accesorigin,
-    credentials: true
+    credentials: true,   // Allow credentials (cookies) to be sent
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers
 }));
 
 // Connect to MongoDB
@@ -42,8 +38,6 @@ app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
 });
-
-
 
 // Use authentication routes
 app.use('/auth', authRouter);
