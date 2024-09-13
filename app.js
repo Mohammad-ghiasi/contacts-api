@@ -1,12 +1,9 @@
-// app.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser'); // Import cookie-parser
-
 const app = express();
 const port = process.env.PORT || 3000;
-
 const contactrouter = require('./routes/blogRoutes');
 const { router: authRouter, verifyToken } = require('./routes/authRoutes'); // Import auth routes and verification function
 
@@ -15,6 +12,15 @@ app.use(express.json());
 
 // Middleware to parse cookies
 app.use(cookieParser());
+
+// Use CORS middleware with configuration
+app.use(cors({
+    origin: 'http://localhost:3001', // Allow requests from this origin
+    credentials: true // Allow credentials (cookies) to be sent
+}));
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Connect to MongoDB
 const dbUri = 'mongodb+srv://mohammadghiasi:Mgh3300305421@contacts.g4row.mongodb.net/contacts?retryWrites=true&w=majority&appName=contacts';
@@ -26,14 +32,13 @@ mongoose.connect(dbUri)
         console.log('Faced an error!', error);
     });
 
-// Use CORS middleware
-app.use(cors());
-
 // Middleware to log request details
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next();
 });
+
+
 
 // Use authentication routes
 app.use('/auth', authRouter);
@@ -45,6 +50,12 @@ app.get('/protected', verifyToken, (req, res) => {
 
 // Use existing routes
 app.use(contactrouter);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Something went wrong!', error: err.message });
+});
 
 // Start the server
 app.listen(port, () => {
