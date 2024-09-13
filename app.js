@@ -6,6 +6,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 const contactrouter = require('./routes/blogRoutes');
 const { router: authRouter, verifyToken } = require('./routes/authRoutes'); // Import auth routes and verification function
+const accesorigin = 'http://localhost:3001'
+
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -15,12 +17,15 @@ app.use(cookieParser());
 
 // Use CORS middleware with configuration
 app.use(cors({
-    origin: 'http://localhost:3001', // Allow requests from this origin
+    origin: accesorigin, // Allow requests from this origin
     credentials: true // Allow credentials (cookies) to be sent
 }));
 
 // Handle preflight requests
-app.options('*', cors());
+app.options('*', cors({
+    origin: accesorigin,
+    credentials: true
+}));
 
 // Connect to MongoDB
 const dbUri = 'mongodb+srv://mohammadghiasi:Mgh3300305421@contacts.g4row.mongodb.net/contacts?retryWrites=true&w=majority&appName=contacts';
