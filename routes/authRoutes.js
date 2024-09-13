@@ -60,6 +60,7 @@ router.post('/login', async (req, res) => {
         res.cookie('auth_token', token, {
             httpOnly: true,        // Ensures the cookie is not accessible via JavaScript
             maxAge: 3600000,       // Cookie expiration time in milliseconds
+            path: '/',
             sameSite: 'None',      // Allow cross-site cookies
             secure: process.env.NODE_ENV === 'production', // Use 'true' if you're on HTTPS
         });
