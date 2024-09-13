@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000;
 const contactrouter = require('./routes/blogRoutes');
 const { router: authRouter, verifyToken } = require('./routes/authRoutes'); // Import auth routes and verification function
 
-const accesorigin = 'https://contact-front-git-main-mohammad-ghiasis-projects.vercel.app/'; // The frontend's origin
+const frontendOrigin = 'https://contact-front-blush.vercel.app'; // The frontend's origin
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -15,9 +15,9 @@ app.use(express.json());
 // Middleware to parse cookies
 app.use(cookieParser());
 
-// Use CORS middleware with configuration
+// Use CORS middleware with configuration to allow specific origin
 app.use(cors({
-    origin: accesorigin, // Allow requests from this origin
+    origin: frontendOrigin, // Allow the specific frontend origin
     credentials: true,   // Allow credentials (cookies) to be sent
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers
