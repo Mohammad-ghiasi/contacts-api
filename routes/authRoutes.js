@@ -57,11 +57,9 @@ router.post('/login', async (req, res) => {
 
         const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
         res.cookie('auth_token', token, {
-            httpOnly: true,
+            httpOnly: false,
             maxAge: 3600000, // 1 hour
-            sameSite: 'Lax', // More restrictive setting, suitable for first-party contexts
-            secure: true, // Ensure cookies are sent over HTTPS
-            path: '/', // Accessible across the site
+            
         });
         
 
