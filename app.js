@@ -20,6 +20,8 @@ app.use(cookieParser());
 app.use(cors({
     origin: frontendOrigin, // Allow the specific frontend origin
     credentials: true,   // Allow credentials (cookies) to be sent
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow headers
 }));
 
 // Connect to MongoDB
