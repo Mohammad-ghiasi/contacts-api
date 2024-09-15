@@ -56,6 +56,10 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '1h' });
+        res.cookie('auth_token', token, {
+            httpOnly: true,
+            maxAge: 3600000, // 1 hour
+        });
 
         res.json({ message: 'Login successful', token: token });
     } catch (error) {
@@ -70,10 +74,8 @@ router.post('/logout', (req, res) => {
 
 // Middleware to verify token
 const verifyToken = async (req, res, next) => {
-    const token = req.cookies.auth_token;
+    const token = req.cookies['auth_token'];
 
-    console.log(token);
-    
     if (!token) {
         return res.status(401).json('token undefined!');
     }
