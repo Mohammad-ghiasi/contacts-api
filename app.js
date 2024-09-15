@@ -10,11 +10,13 @@ const { router: authRouter, verifyToken } = require('./routes/authRoutes'); // I
 const frontendOrigin = 'http://localhost:3001'; // The frontend's origin
 // https://contact-front-blush.vercel.app
 
-// Middleware to parse JSON request bodies
-app.use(express.json());
 
 // Middleware to parse cookies
 app.use(cookieParser());
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+
 
 // Use CORS middleware with configuration to allow specific origin
 app.use(cors({

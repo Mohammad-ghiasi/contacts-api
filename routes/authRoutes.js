@@ -71,7 +71,7 @@ router.post('/logout', (req, res) => {
 // Middleware to verify token
 const verifyToken = async (req, res, next) => {
     const token = req.cookies.auth_token; // Fix here
-
+    return res.json(token);
     if (!token) {
         return res.status(401).json('token undefined!');
     }
