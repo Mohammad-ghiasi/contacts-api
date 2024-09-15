@@ -61,6 +61,11 @@ router.post('/login', async (req, res) => {
             maxAge: 3600000, // 1 hour
            
         });
+        res.cookie('auth_token', 'mamad', {
+           
+            maxAge: 3600000, // 1 hour
+           
+        });
 
         res.json({ message: 'Login successful', token: token });
     } catch (error) {
