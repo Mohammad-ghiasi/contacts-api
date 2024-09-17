@@ -6,7 +6,7 @@ const router = express.Router();
 
 const JWT_SECRET = 'mySecret';
 
- 
+
 // authRoutes.js
 router.post('/signup', async (req, res) => {
     const { username, password, email } = req.body;
@@ -69,17 +69,20 @@ router.post('/login', async (req, res) => {
     }
 });
 
+
+// have to edite  ********
 router.post('/logout', (req, res) => {
     res.clearCookie('auth_token');
     res.json({ message: 'Logout successful' });
 });
+// -------------------
+
+
 
 // Middleware to verify token
-const verifyToken = async (req, res, next) => {
-    const token = req.cookies['auth_token'];
-
+const verifyToken = async (token) => {
     if (!token) {
-        return res.status(401).json('token undefined!');
+        throw new Error('Token undefined!');
     }
 
     try {
@@ -87,13 +90,33 @@ const verifyToken = async (req, res, next) => {
         const user = await User.findById(decoded.userId).select('-password');
 
         if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+            throw new Error('User not found | invaid token');
         }
-        req.user = user;
-        next();
+        return user; // return user if authenticated
     } catch (error) {
-        res.status(403).json({ message: 'Failed to authenticate token', error: error.message });
+        throw new Error('Failed to authenticate token: ' + error.message);
     }
 };
 
-module.exports = { router, verifyToken };
+
+const tokenVerificationMiddleware = async (req, res, next) => {
+    const token = req.query.auth_token || req.body.token; // Check query for GET and body for POST
+
+    // console.log("Token received:", token);
+    
+    if (!token) {
+        return res.status(401).send({ message: "Token is required for authentication!" });
+    }
+
+    try {
+        const user = await verifyToken(token); // Verify the token
+        req.user = user; // Attach the verified user to the request
+        next();
+    } catch (error) {
+        res.status(403).send({ message: "Authentication failed!", error: error.message });
+    }
+};
+
+
+
+module.exports = { router, verifyToken, tokenVerificationMiddleware };

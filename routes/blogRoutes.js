@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Contacts = require('../models/contacts');
 const User = require('../models/user');
-const { verifyToken } = require('./authRoutes');
+const { tokenVerificationMiddleware } = require('./authRoutes');
 
 
-router.post('/contact', verifyToken, async (req, res) => {
+router.post('/contact', tokenVerificationMiddleware, async (req, res) => {
     const { name, phone } = req.body;
     const userId = req.user._id;
 
@@ -30,7 +30,7 @@ router.post('/contact', verifyToken, async (req, res) => {
     }
 });
 
-router.get('/get-contacts', verifyToken, async (req, res) => {
+router.get('/get-contacts', tokenVerificationMiddleware, async (req, res) => {
     try {
         const userId = req.user._id;
         const contacts = await Contacts.find({ user: userId });
@@ -41,7 +41,7 @@ router.get('/get-contacts', verifyToken, async (req, res) => {
 });
 
 
-router.get('/get-contact', verifyToken, async (req, res) => {
+router.get('/get-contact', tokenVerificationMiddleware, async (req, res) => {
     const { id } = req.query;
     const userId = req.user._id;
 
@@ -58,7 +58,7 @@ router.get('/get-contact', verifyToken, async (req, res) => {
 
 
 // Edit contact route
-router.put('/edit-contact', verifyToken, async (req, res) => {
+router.put('/edit-contact', tokenVerificationMiddleware, async (req, res) => {
     const { id, name, phone } = req.body;
     const userId = req.user._id;
 
@@ -91,7 +91,7 @@ router.put('/edit-contact', verifyToken, async (req, res) => {
 });
 
 
-router.delete('/remove-contact', verifyToken, async (req, res) => {
+router.delete('/remove-contact', tokenVerificationMiddleware, async (req, res) => {
     const { id } = req.query;
     const userId = req.user._id;
 
