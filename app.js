@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000;
 const contactrouter = require('./routes/blogRoutes');
 const { router: authRouter, verifyToken } = require('./routes/authRoutes'); // Import auth routes and verification function
 
-const frontendOrigin = 'https://contact-front-blush.vercel.app'; // The frontend's origin
+const frontendOrigin = 'http://localhost:3001'; // The frontend's origin
 // https://contact-front-blush.vercel.app
 
 
@@ -49,7 +49,7 @@ app.get('/protected', verifyToken, (req, res) => {
 });
 
 // Use existing routes
-app.use(contactrouter);
+app.use('/contacts', contactrouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
