@@ -13,8 +13,6 @@ const frontendOrigin = 'https://contact-front-blush.vercel.app'; // The frontend
 
 // Middleware to parse cookies
 app.use(cookieParser());
-// Middleware to parse JSON request bodies
-app.use(express.json());
 
 
 
@@ -42,6 +40,15 @@ app.use((req, res, next) => {
 
 // Use authentication routes
 app.use('/auth', authRouter);
+
+// Define a route to access cookies
+app.get('/cookie', (req, res) => {
+    // Access cookies
+    const cookies = req.cookies;
+
+    // Do something with the cookies
+    res.json({ cookies });
+});
 
 // Protected route to get user data
 app.get('/protected', verifyToken, (req, res) => {
