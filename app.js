@@ -11,8 +11,6 @@ const frontendOrigin = 'https://contact-front-blush.vercel.app'; // The frontend
 // https://contact-front-blush.vercel.app
 
 
-// Middleware to parse cookies
-app.use(cookieParser());
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
@@ -24,6 +22,9 @@ app.use(cors({
     credentials: true,   // Allow credentials (cookies) to be sent
 }));
 
+
+// Middleware to parse cookies
+app.use(cookieParser());
 // Connect to MongoDB
 const dbUri = 'mongodb+srv://mohammadghiasi:Mgh3300305421@contacts.g4row.mongodb.net/contacts?retryWrites=true&w=majority&appName=contacts';
 mongoose.connect(dbUri)
