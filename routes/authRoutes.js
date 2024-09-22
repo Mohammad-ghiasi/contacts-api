@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const router = express.Router();
 
-const JWT_SECRET = 'mySecret';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 
 // authRoutes.js
