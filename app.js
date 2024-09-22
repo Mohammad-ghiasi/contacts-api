@@ -1,33 +1,30 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const cookieParser = require('cookie-parser'); // Import cookie-parser
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv'); // Import dotenv to load environment variables
+
+dotenv.config(); // Load variables from .env file
+
 const app = express();
 const port = process.env.PORT || 3000;
 const contactrouter = require('./routes/blogRoutes');
-const { router: authRouter, verifyToken } = require('./routes/authRoutes'); // Import auth routes and verification function
-
-const frontendOrigin = 'https://contact-front-blush.vercel.app'; // The frontend's origin
-// https://contact-front-blush.vercel.app
-
+const { router: authRouter, verifyToken } = require('./routes/authRoutes');
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-
-
 // Use CORS middleware with configuration to allow specific origin
 app.use(cors({
-    origin: frontendOrigin, // Allow the specific frontend origin
+    origin: process.env.FRONTEND_ORIGIN, // Use environment variable for frontend origin
     credentials: true,   // Allow credentials (cookies) to be sent
 }));
 
-
 // Middleware to parse cookies
 app.use(cookieParser());
-// Connect to MongoDB
-const dbUri = 'mongodb+srv://mohammadghiasi:Mgh3300305421@contacts.g4row.mongodb.net/contacts?retryWrites=true&w=majority&appName=contacts';
-mongoose.connect(dbUri)
+
+// Connect to MongoDB using environment variable
+mongoose.connect(process.env.DB_URI)
     .then(() => {
         console.log('Connected successfully!');
     })
@@ -45,10 +42,7 @@ app.use((req, res, next) => {
 app.use('/auth', authRouter);
 
 app.get('/cookie', (req, res) => {
-    // Access cookies
     const cookies = req.cookies;
-
-    // Do something with the cookies
     res.json({ cookies });
 });
 

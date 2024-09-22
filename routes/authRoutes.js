@@ -101,8 +101,6 @@ const verifyToken = async (token) => {
 
 const tokenVerificationMiddleware = async (req, res, next) => {
     const token = req.query.auth_token || req.body.token; // Check query for GET and body for POST
-
-    // console.log("Token received:", token);
     
     if (!token) {
         return res.status(401).send({ message: "Token is required for authentication!" });
